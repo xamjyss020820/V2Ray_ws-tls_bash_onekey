@@ -73,21 +73,7 @@ random_num=$((RANDOM%12+4))
 [[ ! "$(command -v curl)" ]] && apt install curl -y -qq
 [[ ! "$(command -v jq)" ]] && apt install jq -y -qq
 ### CounterAPI update URL
-
-# Set the range for random numbers
-MIN=1
-MAX=100
-
-# Set the number of iterations for the loop
-COUNT=10
-
-# Start the loop
-for ((i=1; i<=COUNT; i++))
-do
-  # Generate a random number within the specified range
-COUNTER=$(($RANDOM % ($MAX-$MIN+1) + $MIN))
-
-done
+COUNTER="$(curl -4sX GET "https://api.countapi.xyz/hit/xamjyss/vmess" | jq -r '.value')"
 IPADDR="$(curl -4skL http://ipinfo.io/ip)"
 
 GLOBAL_API_KEY="35796ade6e05918c4f0b6e2812c0bc52ba4f3"
