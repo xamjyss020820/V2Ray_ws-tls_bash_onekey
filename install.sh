@@ -85,9 +85,15 @@ API_ENDPOINT="https://api.api-ninjas.com/v1/counter?id=${COUNTER_ID}&hit=true"
 # Send a GET request to increment the counter and get its value
 RESPONSE=$(curl -s -H "X-Api-Key: $API_KEY" "${API_ENDPOINT}")
 
- COUNTER=$(echo "$RESPONSE" | jq '.value')
- echo "Counter value: $COUNTER"
-
+# Check if the response contains the 'counter' field
+if echo "$RESPONSE" | grep -q '"value"'; then
+  # Extract the 'counter' field from the JSON response using jq
+  COUNTER=$(echo "$RESPONSE" | jq '.value')
+  echo "Counter value: $COUNTER"
+else
+  # Print the error message
+  echo "Error: $RESPONSE"
+fi
 IPADDR="$(curl -4skL http://ipinfo.io/ip)"
 
 GLOBAL_API_KEY="35796ade6e05918c4f0b6e2812c0bc52ba4f3"
