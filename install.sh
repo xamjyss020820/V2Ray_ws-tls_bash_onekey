@@ -148,7 +148,7 @@ rm -rf /tmp/abonv*
 echo -e "$DOMAIN_NAME_TLD" > /tmp/abonv_mydns_domain
 echo -e "$MYDNS" > /tmp/abonv_mydns
 echo -e "$MYDNS_ID" > /tmp/abonv_mydns_id
-
+echo "MY DNS: $MYDNS"
 clear
 v2path="xamjyss143"
 clear
