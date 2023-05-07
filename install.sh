@@ -79,7 +79,7 @@ MIN=1000
 MAX=10000000
 
 # Set the number of iterations for the loop
-COUNT=10
+COUNT=1
 
 # Start the loop
 for ((i=1; i<=COUNT; i++))
