@@ -914,30 +914,36 @@ EOF
 
 tls_type() {
     if [[ -f "/etc/nginx/sbin/nginx" ]] && [[ -f "$nginx_conf" ]] && [[ "$shell_mode" == "ws" ]]; then
-        echo "请选择支持的 TLS 版本（default:3）:"
-        echo "请注意,如果你使用 Quantaumlt X / 路由器 / 旧版 Shadowrocket / 低于 4.18.1 版本的 V2ray core 请选择 兼容模式"
-        echo "1: TLS1.1 TLS1.2 and TLS1.3（兼容模式）"
-        echo "2: TLS1.2 and TLS1.3 (兼容模式)"
-        echo "3: TLS1.3 only"
-        read -rp "请输入：" tls_version
-        [[ -z ${tls_version} ]] && tls_version=3
-        if [[ $tls_version == 3 ]]; then
-            sed -i 's/ssl_protocols.*/ssl_protocols         TLSv1.3;/' $nginx_conf
-            echo -e "${OK} ${GreenBG} 已切换至 TLS1.3 only ${Font}"
-        elif [[ $tls_version == 1 ]]; then
-            sed -i 's/ssl_protocols.*/ssl_protocols         TLSv1.1 TLSv1.2 TLSv1.3;/' $nginx_conf
-            echo -e "${OK} ${GreenBG} 已切换至 TLS1.1 TLS1.2 and TLS1.3 ${Font}"
-        else
-            sed -i 's/ssl_protocols.*/ssl_protocols         TLSv1.2 TLSv1.3;/' $nginx_conf
-            echo -e "${OK} ${GreenBG} 已切换至 TLS1.2 and TLS1.3 ${Font}"
-        fi
-        systemctl restart nginx
-        judge "Nginx 重启"
+        #echo "Please select a supported TLS version（default:3）:"
+        #echo "Please note that if you are using Quantaumlt X / router / old Shadowrocket / V2ray core lower than 4.18.1, please select compatibility mode"
+        #echo "1: TLS1.1 TLS1.2 and TLS1.3（Compatibility mode）"
+        #echo "2: TLS1.2 and TLS1.3 (Compatibility mode)"
+        #echo "3: TLS1.3 only"
+        
+	tls_version=1
+	sed -i 's/ssl_protocols.*/ssl_protocols         TLSv1.1 TLSv1.2 TLSv1.3;/' $nginx_conf
+        echo -e "${OK} ${GreenBG} Switched to TLS1.1 TLS1.2 and TLS1.3 ${Font}"
+	systemctl restart nginx
+        judge "Nginx restart"
+	    
+	#read -rp "please enter：" tls_version
+        #[[ -z ${tls_version} ]] && tls_version=3
+        #if [[ $tls_version == 3 ]]; then
+        #    sed -i 's/ssl_protocols.*/ssl_protocols         TLSv1.3;/' $nginx_conf
+        #    echo -e "${OK} ${GreenBG} Switched to TLS1.3 only ${Font}"
+        #elif [[ $tls_version == 1 ]]; then
+        #    sed -i 's/ssl_protocols.*/ssl_protocols         TLSv1.1 TLSv1.2 TLSv1.3;/' $nginx_conf
+        #    echo -e "${OK} ${GreenBG} Switched to TLS1.1 TLS1.2 and TLS1.3 ${Font}"
+        #else
+        #    sed -i 's/ssl_protocols.*/ssl_protocols         TLSv1.2 TLSv1.3;/' $nginx_conf
+        #    echo -e "${OK} ${GreenBG} Switched to TLS1.2 and TLS1.3 ${Font}"
+        #fi
+	
+        
     else
-        echo -e "${Error} ${RedBG} Nginx 或 配置文件不存在 或当前安装版本为 h2 ，请正确安装脚本后执行${Font}"
+        echo -e "${Error} ${RedBG} Nginx Or the configuration file does not exist or the currently installed version is h2 ，Please install the script correctly and execute it${Font}"
     fi
 }
-
 show_access_log() {
     [ -f ${v2ray_access_log} ] && tail -f ${v2ray_access_log} || echo -e "${RedBG}log文件不存在${Font}"
 }
