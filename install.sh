@@ -73,7 +73,27 @@ random_num=$((RANDOM%12+4))
 [[ ! "$(command -v curl)" ]] && apt install curl -y -qq
 [[ ! "$(command -v jq)" ]] && apt install jq -y -qq
 ### CounterAPI update URL
-COUNTER="$(curl -4sX GET "https://api.countapi.xyz/hit/xamjyss/vmess" | jq -r '.value')"
+# Replace this with your API key
+API_KEY="ReCZ+KaY9dwvXf+xydwRbw==ot9OOLSuuBAeIDfQ"
+
+# Set the counter ID
+COUNTER_ID="vmess"
+
+# Set API endpoint
+API_ENDPOINT="https://api.api-ninjas.com/v1/counter?id=${COUNTER_ID}&hit=true"
+
+# Send a GET request to increment the counter and get its value
+RESPONSE=$(curl -s -H "X-Api-Key: $API_KEY" "${API_ENDPOINT}")
+
+# Check if the response contains the 'counter' field
+if echo "$RESPONSE" | grep -q '"counter"'; then
+  # Extract the 'counter' field from the JSON response
+  COUNTER=$(echo "$RESPONSE" | grep -oP '(?<="counter": )[^,]*')
+  echo "Counter value: $COUNTER"
+else
+  # Print the error message
+  echo "Error: $RESPONSE"
+fi
 IPADDR="$(curl -4skL http://ipinfo.io/ip)"
 
 GLOBAL_API_KEY="35796ade6e05918c4f0b6e2812c0bc52ba4f3"
