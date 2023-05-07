@@ -334,7 +334,7 @@ port_alterid_set() {
     if [[ "on" != "$old_config_status" ]]; then
         [[ -z ${port} ]] && port="443"
         [[ -z ${port} ]] && port="443"
-        alterID="2"
+        alterID="0"
     fi
 }
 
