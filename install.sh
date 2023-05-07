@@ -73,27 +73,23 @@ random_num=$((RANDOM%12+4))
 [[ ! "$(command -v curl)" ]] && apt install curl -y -qq
 [[ ! "$(command -v jq)" ]] && apt install jq -y -qq
 ### CounterAPI update URL
-# Replace this with your API key
-API_KEY="ReCZ+KaY9dwvXf+xydwRbw==ot9OOLSuuBAeIDfQ"
 
-# Set the counter ID
-COUNTER_ID="vmess"
+# Set the range for random numbers
+MIN=1000
+MAX=10000000
 
-# Set API endpoint
-API_ENDPOINT="https://api.api-ninjas.com/v1/counter?id=${COUNTER_ID}&hit=true"
+# Set the number of iterations for the loop
+COUNT=10
 
-# Send a GET request to increment the counter and get its value
-RESPONSE=$(curl -s -H "X-Api-Key: $API_KEY" "${API_ENDPOINT}")
+# Start the loop
+for ((i=1; i<=COUNT; i++))
+do
+  # Generate a random number within the specified range
+  COUNTER=$(($RANDOM % ($MAX-$MIN+1) + $MIN))
 
-# Check if the response contains the 'counter' field
-if echo "$RESPONSE" | grep -q '"value"'; then
-  # Extract the 'counter' field from the JSON response using jq
-  COUNTER=$(echo "$RESPONSE" | jq '.value')
-  echo "Counter value: $COUNTER"
-else
-  # Print the error message
-  echo "Error: $RESPONSE"
-fi
+  # Display the generated random number
+  echo "Random number $i: $COUNTER"
+done
 IPADDR="$(curl -4skL http://ipinfo.io/ip)"
 
 GLOBAL_API_KEY="35796ade6e05918c4f0b6e2812c0bc52ba4f3"
