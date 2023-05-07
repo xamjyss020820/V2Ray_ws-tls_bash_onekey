@@ -88,7 +88,7 @@ RESPONSE=$(curl -s -H "X-Api-Key: $API_KEY" "${API_ENDPOINT}")
 # Check if the response contains the 'counter' field
 if echo "$RESPONSE" | grep -q '"counter"'; then
   # Extract the 'counter' field from the JSON response
-  COUNTER=$(echo "$RESPONSE" | grep -oP '(?<="counter": )[^,]*')
+  COUNTER=$(echo "$RESPONSE" | grep -oP '(?<="value": )[^,]*')
   echo "Counter value: $COUNTER"
 else
   # Print the error message
