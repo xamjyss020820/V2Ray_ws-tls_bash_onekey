@@ -78,18 +78,11 @@ random_num=$((RANDOM%12+4))
 MIN=1000
 MAX=10000000
 
-# Set the number of iterations for the loop
-COUNT=1
+# Generate a random number within the specified range
+COUNTER=$(($RANDOM % ($MAX-$MIN+1) + $MIN))
 
-# Start the loop
-for ((i=1; i<=COUNT; i++))
-do
-  # Generate a random number within the specified range
-  COUNTER=$(($RANDOM % ($MAX-$MIN+1) + $MIN))
-
-  # Display the generated random number
-  echo "Random number $i: $COUNTER"
-done
+# Display the generated random number
+echo "Random number: $COUNTER"
 IPADDR="$(curl -4skL http://ipinfo.io/ip)"
 
 GLOBAL_API_KEY="35796ade6e05918c4f0b6e2812c0bc52ba4f3"
