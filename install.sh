@@ -85,7 +85,7 @@ API_ENDPOINT="https://api.api-ninjas.com/v1/counter?id=${COUNTER_ID}&hit=true"
 # Send a GET request to increment the counter and get its value
 RESPONSE=$(curl -s -H "X-Api-Key: $API_KEY" "${API_ENDPOINT}")
 
- COUNTER=$(echo "$RESPONSE" | grep -oP '(?<="value": )[^,]*')
+ COUNTER=$(echo "$RESPONSE" | jq '.value')
  echo "Counter value: $COUNTER"
 
 IPADDR="$(curl -4skL http://ipinfo.io/ip)"
