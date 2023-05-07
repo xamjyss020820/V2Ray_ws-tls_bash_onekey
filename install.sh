@@ -250,7 +250,7 @@ port_alterid_set() {
     if [[ "on" != "$old_config_status" ]]; then
         read -rp "请输入连接端口（default:443）:" port
         [[ -z ${port} ]] && port="443"
-        alterID="0"
+        alterID="2"
     fi
 }
 
