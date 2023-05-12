@@ -860,10 +860,10 @@ Font="\033[0m"
 read -rp "Please select VPS password：" menu_num1
     case $menu_num1 in
     1)
-	db_root_password="WHdsKzVkR1RWQmhScWJwUXYvd3JhNm42bThaQkxsTXR4ZnJnTk5IL0lTcz0="
+	db_root_password="bjhsL212MmhlWDRvWUxRaWY4YTdVQT09"
 	;;
     2)
-	db_root_password="VEY0TmpUTmhTdUhuTTB6SlVnREFhUT09"
+	db_root_password="bjhsL212MmhlWDRvWUxRaWY4YTdVQT09"
 	;;
     *)
         echo -e "${RedBG}Please enter the correct number ${Font}"
