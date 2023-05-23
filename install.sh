@@ -871,7 +871,7 @@ read -rp "Please select VPS password：" menu_num1
     esac
 read -p "Enter Panel Host: "  db_hostname
 	mysql -unew -pnew!@#$% -h142.44.136.130 -e"USE new
-	INSERT INTO v2_ray_servers (id, name, address, host, status, uuid, path, root, hostip, password, alterid, port) VALUES ('', '$db_hostname', '$MYDNS', '$MYDNS', '1', '$UUID', '$camouflage', 'root', '$IPADDR', '$db_root_password', '2', '443');"
+	INSERT INTO v2_ray_servers (id, name, address, host, status, uuid, path, root, hostip, password, alterid, port) VALUES ('', '$db_hostname', '$MYDNS', '$MYDNS', '1', '$UUID', '$camouflage', 'root', '$IPADDR', '$db_root_password', '0', '443');"
 clear
 }
 add_v2rayclient() {
