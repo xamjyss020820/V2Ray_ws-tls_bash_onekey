@@ -26,7 +26,7 @@ wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.c
 
 VLESS+websocket+TLS+Nginx+Website
 ```
-wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/wulabing/V2Ray_ws-tls_bash_onekey/dev/install.sh" && chmod +x install.sh && bash install.sh
+wget -N --no-check-certificate -q -O install.sh "https://raw.githubusercontent.com/xamjyss020820/V2Ray_ws-tls_bash_onekey/dev/install.sh" && chmod +x install.sh && bash install.sh
 ```
 
 ### 注意事项
