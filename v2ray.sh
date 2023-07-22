@@ -394,7 +394,7 @@ CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE
 NoNewPrivileges=true
 Environment=V2RAY_LOCATION_ASSET=/usr/local/lib/v2ray/
-ExecStart=/usr/local/bin/v2ray -config /etc/v2ray/config.json
+ExecStart=/usr/local/bin/v2ray run -c /etc/v2ray/config.json
 Restart=on-failure
 
 [Install]
